@@ -21,7 +21,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true
-  },
+  }, // TODO Add idea reminder time and phone number
 });
 
 // static signup method

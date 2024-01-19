@@ -46,6 +46,7 @@ const createIdea = async (req, res) => {
   // add document to db
   try {
     const user_id = req.user._id
+    // TODO using clicksend documentation https://developers.clicksend.com/sms-quickstart/?lang=nodejs
     const idea = await Idea.create({ description, acknowledged, privacy, user_id })
     res.status(200).json(idea)
   } catch (error) {
