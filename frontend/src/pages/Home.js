@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useIdeasContext } from '../hooks/useIdeasContext';
 
 // components
 import IdeaDetails from "../components/IdeaDetails"
@@ -6,7 +7,7 @@ import IdeaForm from '../components/IdeaForm';
 
 
 const Home = () => {
-  const [ideas, setIdeas] = useState(null)
+  const {ideas, dispatch} = useIdeasContext()
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -14,12 +15,12 @@ const Home = () => {
       const json = await response.json()
 
       if (response.ok) {
-        setIdeas(json)
+        dispatch({type: 'SET_IDEAS', payload: json})
       }
     }
 
     fetchIdeas()
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="home">
