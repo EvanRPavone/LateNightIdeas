@@ -5,9 +5,13 @@ const {
   createIdea,
   deleteIdea,
   updateIdea
-} = require('../controllers/ideaController')
+} = require('../controllers/ideaController');
+const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router();
+
+// require auth for all idea routes
+router.use(requireAuth)
 
 // GET ALL IDEAS
 router.get('/', getIdeas);

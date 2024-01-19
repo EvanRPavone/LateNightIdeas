@@ -15,6 +15,10 @@ const ideaSchema = new Schema({
   privacy: {
     // if idea is private or public
     type: Boolean,
+  },
+  user_id: {
+    type: String,
+    required: true
   }
 }, { timestamps: true })
 

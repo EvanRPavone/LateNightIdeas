@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useIdeasContext } from '../hooks/useIdeasContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 // components
 import IdeaDetails from "../components/IdeaDetails"
@@ -7,20 +8,26 @@ import IdeaForm from '../components/IdeaForm';
 
 
 const Home = () => {
-  const {ideas, dispatch} = useIdeasContext()
+  const {ideas, dispatch} = useIdeasContext();
+  const { user } = useAuthContext();
 
   useEffect(() => {
     const fetchIdeas = async () => {
-      const response = await fetch(`/api/ideas`) // TODO change to backend server prod url
+      const response = await fetch(`/api/ideas`, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      }) // TODO change to backend server prod url
       const json = await response.json()
 
       if (response.ok) {
         dispatch({type: 'SET_IDEAS', payload: json})
       }
     }
-
-    fetchIdeas()
-  }, [dispatch])
+    if (user) {
+      fetchIdeas()
+    }
+  }, [dispatch, user])
 
   return (
     <div className="home">

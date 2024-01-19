@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useIdeasContext } from "../hooks/useIdeasContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const IdeaForm = () => {
   const {dispatch} = useIdeasContext();
@@ -7,9 +8,15 @@ const IdeaForm = () => {
   const [privacy, setPrivacy] = useState(true);
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([])
+  const { user } = useAuthContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!user) {
+      setError('You must be logged in')
+      return
+    }
 
     const idea = {description, privacy}
 
@@ -17,7 +24,8 @@ const IdeaForm = () => {
       method: 'POST',
       body: JSON.stringify(idea),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
       }
     })
     const json = await response.json()

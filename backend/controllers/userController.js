@@ -15,8 +15,9 @@ const loginUser = async (req, res) => {
     //create a token
     // HEADER.PAYLOAD.SIGNATURE
     const token = createToken(user._id)
+    const usersName = `${user.firstName} ${user.lastName}`
 
-    res.status(200).json({ email, token })
+    res.status(200).json({ email, usersName, token })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }

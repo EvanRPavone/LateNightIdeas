@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 
 // get all ideas
 const getIdeas = async (req, res) => {
-  const ideas = await Idea.find().sort({createdAt: -1})
+  const user_id = req.user._id
+
+  const ideas = await Idea.find({ user_id }).sort({createdAt: -1})
 
   res.status(200).json(ideas)
 };
@@ -43,7 +45,8 @@ const createIdea = async (req, res) => {
 
   // add document to db
   try {
-    const idea = await Idea.create({ description, acknowledged, privacy })
+    const user_id = req.user._id
+    const idea = await Idea.create({ description, acknowledged, privacy, user_id })
     res.status(200).json(idea)
   } catch (error) {
     res.status(400).json({error: error.message})

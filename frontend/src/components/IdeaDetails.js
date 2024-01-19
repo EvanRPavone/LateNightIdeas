@@ -1,14 +1,22 @@
 import { useIdeasContext } from "../hooks/useIdeasContext";
+import { useAuthContext } from '../hooks/useAuthContext';
 
 //date fns
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
 const IdeaDetails = ({ idea }) => {
   const { dispatch } = useIdeasContext();
+  const { user } = useAuthContext();
 
   const handleClick = async () => {
+    if (!user) {
+      return
+    }
     const response = await fetch('/api/ideas/' + idea._id, {
-      method: 'DELETE' // TODO change to PATCH
+      method: 'DELETE', // TODO change to PATCH
+      headers: {
+        'Authorization': `Bearer ${user.token}`
+      }
     })
     const json = await response.json()
 
