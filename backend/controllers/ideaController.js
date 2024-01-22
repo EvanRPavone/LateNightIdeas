@@ -1,6 +1,6 @@
 const Idea = require('../models/ideaModel');
 const mongoose = require('mongoose');
-
+// const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_AUTH); https://www.twilio.com/blog/send-scheduled-sms-node-js-twilio
 
 // get all ideas
 const getIdeas = async (req, res) => {
@@ -46,7 +46,19 @@ const createIdea = async (req, res) => {
   // add document to db
   try {
     const user_id = req.user._id
-    // TODO using clicksend documentation https://developers.clicksend.com/sms-quickstart/?lang=nodejs
+
+    // client.messages
+    //   .create({
+    //     body: 'Hello from twilio-node',
+    //     to: '+1'+ req.user.phone, // TODO set to users phone number https://www.twilio.com/blog/send-scheduled-sms-node-js-twilio
+    //     from: env.process.TWILIO_NUMBER, // From a valid Twilio number
+    //   })
+    //   .then((message) => console.log("MSG ID: ",message.sid));
+    // ! Toll Free Number needs verified and this cost money soooo
+
+    // TODO use email as temporary notification solution
+
+    console.log(req.user.email)
     const idea = await Idea.create({ description, acknowledged, privacy, user_id })
     res.status(200).json(idea)
   } catch (error) {
